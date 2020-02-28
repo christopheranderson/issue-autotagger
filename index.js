@@ -52,7 +52,10 @@ function extractTags(body) {
     return allTags;
 }
 
-run();
+run().catch((e)=>{
+    console.error(e);
+    core.setFailed(e);
+})
 
 
 
