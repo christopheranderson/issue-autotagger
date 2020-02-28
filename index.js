@@ -37,7 +37,7 @@ function extractTags(body) {
 
     const allTags = [];
 
-    for (const group of testString.matchAll(rgx)) {
+    for (const group of body.matchAll(rgx)) {
         const match = group[0]
         console.log(`found match: ${match}`);
         const tags = match.replace('[', '').replace(']', '').split(',').map(x => x.trim())
