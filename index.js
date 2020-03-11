@@ -21,6 +21,20 @@ async function run() {
         issue_number: issue.number,
     })
 
+    const {data: issueEvents} = await client.issues.listEvents({
+        owner: github.context.repo.owner,
+        repo: github.context.repo.repo,
+        issue_number: issue.number,
+    })
+
+    const previouslyLabeled = issueEvents.find(v=> v.event === "labeled" && v.actor.login === "github-actions[bot]");
+
+    if(!!previouslyLabeled) {
+        console.log(JSON.stringify(previouslyLabeled, null, ' '));
+        console.log('Issue was previously labelled; skipping');
+        return;
+    }
+
     const tags = extractTags(issue.body).concat(existingIssues);
 
     await client.issues.update({
